@@ -4,7 +4,11 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
@@ -14,18 +18,35 @@ public class CSVReader {
 
 	public static void main(String[] args) throws IOException {
 
-		String file = "/Users/santonayak/Downloads/NetfllixBingeWatch/src/main/resources/netflix.csv";
+		String fileName = "/Users/santonayak/Downloads/NetfllixBingeWatch/src/main/resources/netflix.csv";
 		List<Netflix> showList = new ArrayList<>();
-		String line = "";
+//		String line = "";
+//
+//		BufferedReader reader = new BufferedReader(new FileReader(file));
+//		while ((line = reader.readLine()) != null) {
+//			String[] rows = line.split(",");
+//			Netflix netflix = new Netflix(rows[0], rows[1], rows[2], rows[3], rows[4], rows[5], rows[6], rows[7],
+//					rows[8], rows[9], rows[10], rows[11]);
+//			showList.add(netflix);
+//		}
 
-		BufferedReader reader = new BufferedReader(new FileReader(file));
-		while ((line = reader.readLine()) != null) {
-			String[] rows = line.split(",");
-			Netflix netflix = new Netflix(rows[0], rows[1], rows[2], rows[3], rows[4], rows[5], rows[6], rows[7],
-					rows[8], rows[9], rows[10], rows[11]);
-			showList.add(netflix);
+		Path pathToFile = Paths.get(fileName);
+		List<List<String>> results = null;
+		try {
+			results = Files.readAllLines(pathToFile)
+					.stream()
+					.map(line -> Arrays.asList(line.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)")))
+					.collect(Collectors.toList());
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-
+		int i = 0;
+		for (List<String> result : results) {
+			if (i != 0) {
+				showList.add(new Netflix(result.get(0),result.get(1),result.get(2),result.get(3),result.get(4),result.get(5),result.get(6),result.get(7),result.get(8),result.get(9),result.get(10),result.get(11)));
+			}
+			i++;
+		}
 			getInput(showList);
 	}
 
