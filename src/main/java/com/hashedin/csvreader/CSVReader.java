@@ -14,7 +14,7 @@ public class CSVReader {
 
 	public static void main(String[] args) throws IOException {
 
-		String file = "/Users/swarupbhol/Downloads/netflix.csv";
+		String file = "/Users/santonayak/Downloads/NetfllixBingeWatch/src/main/resources/netflix.csv";
 		List<Netflix> showList = new ArrayList<>();
 		String line = "";
 
